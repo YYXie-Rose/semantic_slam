@@ -135,22 +135,7 @@ void ImageGrabber::GrabRGBD(const sensor_msgs::ImageConstPtr& msgRGB,const senso
         return;
     cv::Mat tcw = Tcw.rowRange(0,3).col(3);
 
-    // Publish tf transform
-    static tf2_ros::TransformBroadcaster br;
-    geometry_msgs::TransformStamped transformStamped;
-    transformStamped.header.stamp = cv_ptrRGB->header.stamp;
-    transformStamped.header.frame_id = "camera_rgb_optical_frame"; 
-    transformStamped.child_frame_id = "world";
-    transformStamped.transform.translation.x = tcw.at<float>(0);
-    transformStamped.transform.translation.y = tcw.at<float>(1);
-    transformStamped.transform.translation.z = tcw.at<float>(2);
-    vector<float> q = ORB_SLAM2::Converter::toQuaternion(Tcw.rowRange(0,3).colRange(0,3));
-    transformStamped.transform.rotation.x = q[0];
-    transformStamped.transform.rotation.y = q[1];
-    transformStamped.transform.rotation.z = q[2];
-    transformStamped.transform.rotation.w = q[3];
-
-    br.sendTransform(transformStamped);
+    
 }
 
 
